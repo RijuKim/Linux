@@ -8,6 +8,7 @@ Linux 쿼터 실습
 /dev/sdb의 파티션 생성과 포맷 진행 후 /userHome 디렉터리에 마운트
 
 실습:
+1)
 #fdisk /dev/sdb
 Command : n
 Select : p
@@ -20,5 +21,26 @@ Command : w
 #mkdir /userHome
 #mount /dev/sdb1 /userHome
 
-vi 이용하여 /etc/fstab 아래에 다음을 추가
+2)vi 이용하여 /etc/fstab 아래에 다음을 추가:
 /dev/sdb1	/userhome	ext4	defaults	0	0
+
+3)john과 bann 유저 만들기(-d옵션 주기)
+
+4)vi 에디터로 /etc/fstab 열어서 defaults 뒤에 usrjquota=aquota.user,jqfmt=vfsv0 추가
+mount --options remount /userHome
+mount 디렉터리가 '쿼터'용으로 마운트된 것 확인
+
+5)쿼터 DB생성:
+cd /userHome
+quotaoff -avug
+quotacheck -augmn
+rm -rf aquota.*
+quotacheck -augmn
+touch aquota.user auota.group
+chmod 600 aquota.*
+quotacheck -augmn
+auotaon -avug
+
+사용자별 공간 할당:
+edquota -u john
+[blocks], [soft], [hard] 블록에 사용 한도 지정
