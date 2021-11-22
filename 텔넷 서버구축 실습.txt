@@ -1,0 +1,18 @@
+텔넷 서버 구축
+
+rpm -qa telnet-server //텔넷 서버 설치 확인 -qa는 패키지 설치 확인 명령
+dnf -y install telnet-server
+
+systemctl start telnet.socket //서비스 시작
+systemctl status telnet.socket //서비스 상태 확인
+
+adduser teluser //접속 테스트를 위한 사용자 만들기
+passwd teluser
+
+ping 192.168.111.100
+telnet 192.168.111.100 //텔넷 접속 시도
+
+firewall-config //텔넷 허용
+systemctl enable telnet.socket
+telnet 192.168.111.100
+ifconfig ens169
